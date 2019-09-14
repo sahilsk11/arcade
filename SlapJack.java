@@ -64,23 +64,23 @@ public class SlapJack extends CardGame {
             if (isJack) {
                 if (timeElapsed < timeTreshhold) {
                     // if the user slapped a jack within the time, they win the round
-                    System.out.printf("You slapped the jack first in just %.2f seconds! You pick up %d %s.\n",
+                    System.out.printf("You slapped the jack first in just %.2f seconds! You pick up %d %s. ",
                             timeElapsed, cardStack.size(), pileCardTense);
                     return 0;
                 } else {
                     // User failed to slap in time
-                    System.out.printf("Too slow! You took %.2f seconds. CPU slapped first and picks up %d %s.\n",
+                    System.out.printf("Too slow! You took %.2f seconds. CPU slapped first and picks up %d %s. ",
                             timeElapsed, cardStack.size(), pileCardTense);
                     return 1;
                 }
             } else {
                 // User slapped the wrong card
-                System.out.printf("That's not a jack! Opponent picks up %d %s.\n", cardStack.size(), pileCardTense);
+                System.out.printf("That's not a jack! Opponent picks up %d %s. ", cardStack.size(), pileCardTense);
                 return 1;
             }
         } else if (isJack) {
             // User did not slap a jack
-            System.out.printf("You missed a jack! Opponent slapped first and picks up %d %s.\n", cardStack.size(),
+            System.out.printf("You missed a jack! Opponent slapped first and picks up %d %s. ", cardStack.size(),
                     pileCardTense);
             return 1;
         } else {
@@ -100,11 +100,11 @@ public class SlapJack extends CardGame {
             if (winner == 0) {
                 user.addCards(cardStack);
                 String nounTense = determineNounForm(user.getNumCards(), "card");
-                System.out.printf("You now have %d %s. CPU has %d. ", user.getNumCards(), nounTense, cpu.getNumCards());
+                System.out.printf("You now have %d %s. CPU has %d.\n", user.getNumCards(), nounTense, cpu.getNumCards());
             } else {
                 cpu.addCards(cardStack);
                 String nounTense = determineNounForm(cpu.getNumCards(), "card");
-                System.out.printf("CPU now has %d %s. You have %d. ", cpu.getNumCards(), nounTense, user.getNumCards());
+                System.out.printf("CPU now has %d %s. You have %d.\n", cpu.getNumCards(), nounTense, user.getNumCards());
             }
             System.out.println("Hit enter to continue...");
             s.nextLine();
@@ -181,11 +181,15 @@ public class SlapJack extends CardGame {
         System.out.println(nextCard);
         // end step 1
 
-        System.out.println("Hit the enter key to slap the card, or type \"pass\" to continue...");
+        System.out.println("Hit the enter key to slap the card, or type \"c\" then enter to continue...");
         displayHint();
-        System.out.print("Your move: ");
+        System.out.print("> ");
         double startTime = System.nanoTime() / 1e9;
         String in = s.nextLine();
+        if (in.equals("quit")) {
+            System.out.println();
+            System.exit(0);
+        }
         double endTime = System.nanoTime() / 1e9;
         double timeElapsed = endTime - startTime;
         // end step 2
@@ -213,10 +217,10 @@ public class SlapJack extends CardGame {
         if (gameFinished) {
             s.close();
             if (user.getNumCards() > 0) {
-                System.out.printf("CPU ran out of cards. You won!\nThe game took %d turns to win. Congrats! 👏🎉\n\n",
+                System.out.printf("CPU ran out of cards. You won!\nThe game took %d turns to finish. Congrats! 👏🎉\n\n",
                         numRounds);
             } else {
-                System.out.printf("You ran out of cards. CPU won!\nThe game took %d turns to win. Try again! 😿😭\n\n",
+                System.out.printf("You ran out of cards. CPU won!\nThe game took %d turns to finish. Try again! 😿😭\n\n",
                         numRounds);
             }
         }

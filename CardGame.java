@@ -14,7 +14,7 @@ public abstract class CardGame {
      * 
      * @return an ArrayList of 52 cards (4 identical sets) in order (A, 2, 3 .... J, Q, K)
      */
-    public ArrayList<Card> constructCardList() {
+    public ArrayList<Card> constructCardList(boolean includeJokers) {
         ArrayList<Card> cards = new ArrayList<Card>();
         int cardIndex = 0;
         String cardName;
@@ -46,6 +46,15 @@ public abstract class CardGame {
             cards.add(c);
             cardIndex++;
         }
+        if (includeJokers) {
+            for (int i = 0; i < 4; i++) {
+                cards.add(new Card(-1, "joker"));
+            }
+        }
         return cards;
+    }
+
+    public ArrayList<Card> constructCardList() {
+        return constructCardList(false);
     }
 }
