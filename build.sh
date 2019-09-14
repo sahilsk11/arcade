@@ -10,7 +10,14 @@ cat console.txt
 echo
 echo "How many tokens do you want to insert?"
 read -p "> " choice
-echo "Depositing $choice tokens..."
+if [ $choice -eq 0 ]
+then
+    echo "Buy more tokens!"
+    exit
+else
+    echo "Depositing $choice tokens..."
+fi
+
 if [ $choice -eq 1 ] 
 then
     echo "Starting Slap Jack!"
@@ -25,7 +32,7 @@ then
 elif [ $choice -eq 3 ]
 then
     echo "Starting Magic Jacques!"
-    sleep 1
+    sleep 2
     clear
     java MagicJacques
     exit

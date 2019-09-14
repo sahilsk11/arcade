@@ -30,31 +30,14 @@ public class MagicJacques extends CardGame {
     }
 
     /**
-     * This program has a lot of printing. Typing "System.out.print" is lengthy and
-     * obscures code
+     * Prints the next commands
+     * 
      */
-    public void out(String s) {
-        System.out.println("\n" + s + "\n");
-        pause(60 * countWords(s) / 350);
-    }
-
-    public int countWords(String str) {
-        int count = 0;
-        int spaceIndex = str.indexOf(" ");
-        while (spaceIndex >= 0 && spaceIndex < str.length()) {
-            count++;
-            str = str.substring(spaceIndex + 1);
-            spaceIndex = str.indexOf(" ");
-        }
-        return count;
-    }
-
-    public void pause(int seconds) {
-        try {
-            TimeUnit.SECONDS.sleep(seconds);
-        } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
-            System.exit(1);
+    public void out(String command, String hint, String[] options) {
+        System.out.println("\n" + command + "\n");
+        if (command.equals("quit")) {
+            System.out.println();
+            System.exit(0);
         }
     }
 
@@ -86,7 +69,7 @@ public class MagicJacques extends CardGame {
         readInput();
         out("You find a wooden name tag in your left pocket. It says \"Magic Jacques\". The name sounds familiar. You put it on.");
         readInput();
-        out("In your right pocket, you pull out a small box. It's full of playing cards. You look them over. It's a brand new deck. You notice Jokers, Aces, and all the other cards, but no Jacks...");
+        out("In your right pocket, you pull out a small box. It's full of playing cards. You look them over. It's a brand new deck. You notice Jokers, Aces, and all the other cards. Those Jokers look especially sharp...");
         readInput();
         out("The door slams open, and you jump to your feet in shock. An ominous red balloon floats by outside...");
         readInput();

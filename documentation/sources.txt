@@ -1,0 +1,12 @@
+This project was made with help from the following sources:
+
+Game Controller ASCII Art: Jens Reissenweber (asciiart.eu)
+Atari ASCII Art: Valkyrie (asciiart.eu)
+Text to ASCII Art (used for "Arcade"): patorjk.com (http://patorjk.com/software/taag/)
+Clown ASCII Art: http://ascii.co.uk/art/clown
+Hand ASCII Art: http://ascii.co.uk/art/hands
+
+Special thanks to:
+
+Douglas Adams and Steve Meretzky for designing Hitchhiker's Guide to the Galaxy - my inspo for Magic Jacques!
+
