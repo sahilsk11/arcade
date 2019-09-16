@@ -1,11 +1,12 @@
-javac *.java;
-clear;
+cd src
+javac *.java > error.log
+clear
 echo "Building arcade..."
 sleep 1
 echo "Waking up the queen..."
 sleep 1
 echo "Hacking into system root- uhh I mean cleaning directory..."
-cat console.txt
+cat images/console.txt
 
 echo
 echo "How many tokens do you want to insert?"
@@ -24,10 +25,12 @@ then
     sleep 2
     clear
     java SlapJack
+    cd ..
     exit
 elif [ $choice -eq 2 ]
 then
     echo "Sorry, this isn't available yet."
+    cd ..
     exit
 elif [ $choice -eq 3 ]
 then
@@ -35,7 +38,9 @@ then
     sleep 2
     clear
     java MagicJacques
+    cd ..
     exit
 else
     echo "Goodbye 👋"
+    cd ..
 fi

@@ -14,12 +14,12 @@ public abstract class CardGame {
      * 
      * @return an ArrayList of 52 cards (4 identical sets) in order (A, 2, 3 .... J, Q, K)
      */
-    public ArrayList<Card> constructCardList(boolean includeJokers) {
+    public ArrayList<Card> constructCardList(boolean includeJokers, int size) {
         ArrayList<Card> cards = new ArrayList<Card>();
         int cardIndex = 0;
         String cardName;
         int cardPower;
-        for (int i = 0; i < 52; i++) {
+        for (int i = 0; i < size; i++) {
             switch (cardIndex) {
                 case 0:
                     cardName = "ace";
@@ -47,7 +47,7 @@ public abstract class CardGame {
             cardIndex++;
         }
         if (includeJokers) {
-            for (int i = 0; i < 4; i++) {
+            for (int i = 0; i < size / 13; i++) {
                 cards.add(new Card(-1, "joker"));
             }
         }
@@ -55,6 +55,11 @@ public abstract class CardGame {
     }
 
     public ArrayList<Card> constructCardList() {
-        return constructCardList(false);
+        return constructCardList(false, 52);
+    }
+
+
+    public ArrayList<Card> constructCardList(int size) {
+        return constructCardList(false, size);
     }
 }

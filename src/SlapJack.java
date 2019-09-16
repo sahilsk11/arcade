@@ -13,6 +13,8 @@ public class SlapJack extends CardGame {
     ArrayList<Card> cardStack; // the pile of cards users add their cards to
     Scanner s; // accepts input
     int numRounds; // keeps track of how many rounds the game takes
+    boolean userWon;
+    String cpuName;
 
     /**
      * Constructor for the SlapJack game
@@ -21,17 +23,22 @@ public class SlapJack extends CardGame {
      * cards
      */
     public SlapJack() {
+        this(52, "CPU");
+    }
+
+    public SlapJack(int size, String cpuName, Scanner s) {
         currentPlayer = 0;
         gameFinished = false;
-        ArrayList<Card> gameCards = constructCardList();
+        ArrayList<Card> gameCards = constructCardList(size);
         Collections.shuffle(gameCards);
         user = new Player(gameCards.subList(0, gameCards.size() / 2)); // the constructor automatically removes cards
                                                                        // from the ArrayList
         cpu = new Player(gameCards); // gameCards will have half of the original elements before, and then none after
                                      // this line
         numRounds = 0;
-        s = new Scanner(System.in);
+        this.s = s;
         System.out.println();
+        this.cpuName = cpuName;
         cardStack = new ArrayList<Card>();
     }
 
@@ -100,11 +107,11 @@ public class SlapJack extends CardGame {
             if (winner == 0) {
                 user.addCards(cardStack);
                 String nounTense = determineNounForm(user.getNumCards(), "card");
-                System.out.printf("You now have %d %s. CPU has %d.\n", user.getNumCards(), nounTense, cpu.getNumCards());
+                System.out.printf("You now have %d %s. %s has %d.\n", user.getNumCards(), nounTense, cpuName, cpu.getNumCards());
             } else {
                 cpu.addCards(cardStack);
                 String nounTense = determineNounForm(cpu.getNumCards(), "card");
-                System.out.printf("CPU now has %d %s. You have %d.\n", cpu.getNumCards(), nounTense, user.getNumCards());
+                System.out.printf("%s now has %d %s. You have %d.\n", cpuName, cpu.getNumCards(), nounTense, user.getNumCards());
             }
             System.out.println("Hit enter to continue...");
             s.nextLine();
@@ -157,8 +164,8 @@ public class SlapJack extends CardGame {
             String cpuCardTense = determineNounForm(cpu.getNumCards(), "card");
             String pileCardTense = determineNounForm(cardStack.size() + 1, "card");
             System.out.printf(
-                    "\nCPU puts down the following card and has %d %s remaining. The pile now has %d %s...\n\n",
-                    cpu.getNumCards(), cpuCardTense, cardStack.size() + 1, pileCardTense);
+                    "\n%s puts down the following card and has %d %s remaining. The pile now has %d %s...\n\n",
+                    cpuName, cpu.getNumCards(), cpuCardTense, cardStack.size() + 1, pileCardTense);
         }
         return nextCard;
     }
@@ -215,16 +222,27 @@ public class SlapJack extends CardGame {
      */
     public boolean isFinished() {
         if (gameFinished) {
-            s.close();
+            if (cpuName.equals("CPU")) { //hard-code check to make sure we don't close scanner if we invoke from another game
+                s.close();
+            }
             if (user.getNumCards() > 0) {
-                System.out.printf("CPU ran out of cards. You won!\nThe game took %d turns to finish. Congrats! 👏🎉\n\n",
-                        numRounds);
+                System.out.printf("%s ran out of cards. You won!\nThe game took %d turns to finish. Congrats! 👏🎉\n\n",
+                        cpuName, numRounds);
+                userWon = true;
             } else {
-                System.out.printf("You ran out of cards. CPU won!\nThe game took %d turns to finish. Try again! 😿😭\n\n",
-                        numRounds);
+                System.out.printf("You ran out of cards. %s won!\nThe game took %d turns to finish. Try again! 😿😭\n\n",
+                        cpuName, numRounds);
+                userWon = false;
             }
         }
         return gameFinished;
+    }
+
+    public boolean playGame() {
+        while (!isFinished()) {
+            playRound();
+        }
+        return userWon;
     }
 
     /**
@@ -234,8 +252,6 @@ public class SlapJack extends CardGame {
      */
     public static void main(String[] args) {
         SlapJack game = new SlapJack();
-        while (!game.isFinished()) {
-            game.playRound();
-        }
+        game.playGame();
     }
 }

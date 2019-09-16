@@ -11,11 +11,11 @@ With that in mind, I set out to design my first console game - which turned into
 
 #### Slapjack
 
-Slapjack was *the* card game I played as a kid, and heck, sometimes still play. The basic premise is each player has a set of cards, face down. Each player takes the top card of their stack, puts it in the middle, and then flips it upside down. If the card is not a Jack, then nothing happens. The pile grows larger. If the card is a Jack, the first player to "slap" the card wins the round, as well as every card in the pile. The goal is to gather all of the cards.
+Slapjack was *the* card game I played as a kid, and heck, sometimes still play. The basic premise is each player has a set of cards, face down. Each player takes the top card of their stack, places it in the middle of all the players, and then flips it to reveal the card. If the card is not a Jack, then nothing happens. The pile grows larger. If the card is a Jack, the first player to "slap" the card wins the round, and takes every card in the pile. The goal is to gather all of the cards.
 
 If a player accidently slaps a card that is not the Jack, typical rules say that they must "burn" a card in a discard pile, which the next winner takes. In our modified version, if the player slaps a wrong card, they lose the round.
 
-In this version, the CPU will never accidently slap a Jack. In fact, the computer actually gets faster at slapping as the game progresses. Think fast!
+In this version, the CPU will never accidently slap a Jack. In fact, the computer actually slaps faster as the game progresses. Think fast!
 
 #### White Jack
 
