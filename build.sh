@@ -1,3 +1,17 @@
+NUM_COLS="$(tput cols)"
+if [ $NUM_COLS -lt 105 ]
+then
+	echo "Screen width is too low! Please increase window width to greater than 105px"
+	exit
+fi
+NUM_ROWS="$(tput lines)"
+if [ $NUM_ROWS -lt 37 ]
+then
+	echo "Screen height is too low! Please increase height to greater than 37px"
+	exit
+fi
+
+
 cd src
 javac *.java > error.log
 clear

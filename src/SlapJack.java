@@ -23,7 +23,7 @@ public class SlapJack extends CardGame {
      * cards
      */
     public SlapJack() {
-        this(52, "CPU");
+        this(52, "CPU", new Scanner(System.in));
     }
 
     public SlapJack(int size, String cpuName, Scanner s) {
