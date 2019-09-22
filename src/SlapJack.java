@@ -103,7 +103,7 @@ public class SlapJack extends CardGame {
         roundLoser = cpu;
       } else {
         roundWinner = cpu;
-        roundLoser = player;
+        roundLoser = user;
       }
       roundWinner.addCards(cardStack);
       String nounTense = determineNounForm(roundWinner.getNumCards(), "card");
@@ -150,12 +150,23 @@ public class SlapJack extends CardGame {
    * @return the next card in the user's deck
    */
   public Card putNextCard() {
-    Player nextPlayer = (currentPlayer == 0) ? user : cpu;
+    String putVerb;
+    String hasVerb;
+    Player nextPlayer;
+    if (currentPlayer == 0) {
+      nextPlayer = user;
+      hasVerb = "have";
+      putVerb = "put";
+    } else {
+      nextPlayer = cpu;
+      hasVerb = "has";
+      putVerb = "puts";
+    }
     Card nextCard = nextPlayer.getNextCard();
     String userCardTense = determineNounForm(nextPlayer.getNumCards(), "card");
     String pileCardTense = determineNounForm(cardStack.size() + 1, "card");
-    System.out.printf("%s put down the following card and have %d %s remaining. The pile has %d %s...\n\n",
-        nextPlayer.getName(), nextPlayer.getNumCards(), userCardTense, cardStack.size() + 1, pileCardTense);
+    System.out.printf("%s %s down the following card and %s %d %s remaining. The pile has %d %s...\n\n",
+        nextPlayer.getName(), putVerb, hasVerb, nextPlayer.getNumCards(), userCardTense, cardStack.size() + 1, pileCardTense);
 
     return nextCard;
   }
@@ -210,10 +221,10 @@ public class SlapJack extends CardGame {
    */
   public void displayWinner() {
     if (user.getNumCards() > 0) {
-      System.out.printf("CPU ran out of cards. You won!\nThe game took %d turns to finish. Congrats! 👏🎉\n\n", cpuName,
+      System.out.printf("CPU ran out of cards. You won!\nThe game took %d turns to finish. Congrats! 👏🎉\n\n",
           numRounds);
     } else {
-      System.out.printf("You ran out of cards. %s won!\nThe game took %d turns to finish. Try again! 😿😭\n\n", cpuName,
+      System.out.printf("You ran out of cards. CPU won!\nThe game took %d turns to finish. Try again! 😿😭\n\n",
           numRounds);
     }
   }

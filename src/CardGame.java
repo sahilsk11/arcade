@@ -19,8 +19,7 @@ public abstract class CardGame {
         ArrayList<Card> cards = new ArrayList<Card>();
         int cardIndex = 0;
         String cardName;
-        int cardPower;
-        int size = sets * 12;
+        int size = sets * 13;
         for (int i = 0; i < size; i++) {
             switch (cardIndex) {
                 case 0:
@@ -45,13 +44,13 @@ public abstract class CardGame {
         }
         if (includeJokers) {
             for (int i = 0; i < size / 13; i++) {
-                cards.add(new Card(-1, "joker"));
+                cards.add(new Card("joker"));
             }
         }
         return cards;
     }
 
     public ArrayList<Card> constructCardList() {
-        return constructCardList(false, 52);
+        return constructCardList(false, 4);
     }
 }

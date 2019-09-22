@@ -14,39 +14,11 @@ public class Card {
     /**
      * Creates a new card
      * 
-     * @param value the "power" of the card
      * @param name  the name of the card (e.g. 10, 9, queen, ace)
      */
-    public Card(int value, String name) {
+    public Card(String name) {
         cardName = name;
-        this.value = value;
         this.cardString = buildCardString();
-    }
-
-    /**
-     * Used to compare values of two cards
-     * 
-     * @param c the second card to compare to
-     * @return 1 if the first card (this) has greater value, -1 if the second card
-     *         is greater, or 0 if they are the same
-     */
-    public int compareTo(Card c) {
-        if (this.value > c.getValue()) {
-            return 1;
-        }
-        if (this.value == c.getValue()) {
-            return 0;
-        }
-        return -1;
-    }
-
-    /**
-     * Gets the value of the card
-     * 
-     * @return the value of the card
-     */
-    public int getValue() {
-        return value;
     }
 
     /**
