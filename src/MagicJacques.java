@@ -134,7 +134,7 @@ public class MagicJacques extends CardGame {
         new String[] { "Do nothing - [enter]" });
     asciiPrint("clown");
     String cardPickedUp = lineOut(
-        "The killer clown appears in front of you, hands out to your throat. You reach for the only\npossible weapon you have - the deck of cards. What card do you pick up?",
+        "A killer clown appears in front of you, hands out to your throat. You reach for the only\npossible weapon you have - the deck of cards. What card do you pick up?",
         "You saw a particularly sharp card earlier when looking over the deck...perhaps try re-reading the line where you looked at your right pocket.",
         new String[] { "Do nothing and die - [enter]", "Pick a card - [enter name of card]" });
 
@@ -178,7 +178,7 @@ public class MagicJacques extends CardGame {
   public boolean checkClownCard(String card) {
     if (card.contains("joker")) {
       System.out.println(
-          "\nYou fling the Joker with all of your might at Pennywise. The card flies through the air and hits the clown square on the nose. With a second pop, the clown turns into a pile of confetti. Only his shoes are left.\n");
+          "\nYou fling the Joker with all of your might at the clown. The card flies through the air and hits the clown square on the nose. With a second pop, the clown turns into a pile of confetti. Only his shoes are left.\n");
       return true;
     } else {
       return false;
