@@ -27,4 +27,6 @@ I won't reveal too much here - part of the game is understanding the story. I wi
 
 ### Usage
 
-After installing the project directory, type `./build.sh` and let the magic begin.
+1. Clone or download the project onto your computer
+2. Using terminal, change directories into the project root (into /arcade)
+3. Type `./build.sh` and let the magic begin!
