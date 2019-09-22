@@ -43,11 +43,6 @@ then
     exit
 elif [ $choice -eq 2 ]
 then
-    echo "Sorry, this isn't available yet."
-    cd ..
-    exit
-elif [ $choice -eq 3 ]
-then
     echo "Starting Magic Jacques!"
     sleep 2
     clear

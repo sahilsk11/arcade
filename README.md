@@ -17,10 +17,6 @@ If a player accidently slaps a card that is not the Jack, typical rules say that
 
 In this version, the CPU will never accidently slap a Jack. In fact, the computer actually slaps faster as the game progresses. Think fast!
 
-#### White Jack
-
-Black Jack is a very common game, mostly played at Casinos. 
-
 #### Magic Jacques
 
 When I started this project, my goal was to create a "magic trick" game involving playing cards. As I researched online, I found that mostly what makes a magic trick "magical" is that it's performed in person. Replicating this on a computer, and especially in a console environment, could be very challenging.
@@ -31,4 +27,4 @@ I won't reveal too much here - part of the game is understanding the story. I wi
 
 ### Usage
 
-After installing the project directory, type `bash build.sh` and let the magic begin.
+After installing the project directory, type `./build.sh` and let the magic begin.
