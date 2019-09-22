@@ -13,8 +13,6 @@ public class SlapJack extends CardGame {
   ArrayList<Card> cardStack; // the pile of cards users add their cards to
   Scanner s; // accepts input
   int numRounds; // keeps track of how many rounds the game takes
-  boolean userWon;
-  String cpuName;
 
   /**
    * Constructor for the SlapJack game
@@ -25,11 +23,11 @@ public class SlapJack extends CardGame {
   public SlapJack(Scanner s) {
     currentPlayer = 0;
     gameFinished = false;
-    ArrayList<Card> gameCards = constructCardList(52);
+    ArrayList<Card> gameCards = constructCardList();
     Collections.shuffle(gameCards);
-    user = new Player(gameCards.subList(0, gameCards.size() / 2)); // automatically removes cards from the ArrayList
-    cpu = new Player(gameCards); // gameCards will have half of the original elements before, and then none
-    cpuName = "CPU";
+    user = new Player("You", gameCards.subList(0, gameCards.size() / 2)); // automatically removes cards from the
+                                                                          // ArrayList
+    cpu = new Player("CPU", gameCards); // gameCards will have half of the original elements before, and then none
     numRounds = 0;
     this.s = s;
     System.out.println();
@@ -98,39 +96,43 @@ public class SlapJack extends CardGame {
    */
   public void printRoundUpdate(int winner) {
     if (winner != -1) {
+      Player roundWinner;
+      Player roundLoser;
       if (winner == 0) {
-        user.addCards(cardStack);
-        String nounTense = determineNounForm(user.getNumCards(), "card");
-        System.out.printf("You now have %d %s. %s has %d.\n", user.getNumCards(), nounTense, cpuName,
-            cpu.getNumCards());
+        roundWinner = user;
+        roundLoser = cpu;
       } else {
-        cpu.addCards(cardStack);
-        String nounTense = determineNounForm(cpu.getNumCards(), "card");
-        System.out.printf("%s now has %d %s. You have %d.\n", cpuName, cpu.getNumCards(), nounTense,
-            user.getNumCards());
+        roundWinner = cpu;
+        roundLoser = player;
       }
+      roundWinner.addCards(cardStack);
+      String nounTense = determineNounForm(roundWinner.getNumCards(), "card");
+      System.out.printf("%s now have %d %s. %s has %d.\n", roundWinner.getName(), roundWinner.getNumCards(), nounTense,
+          roundLoser.getName(), roundLoser.getNumCards());
+
       System.out.println("Hit enter to continue...");
       s.nextLine();
     }
+
   }
 
   /**
-   * Dynamically adjusts the response time required to win the round! The CPU
-   * automatically gets faster over time.
+   * Dynamically adjusts the response time required to win the round. The CPU
+   * automatically gets faster as the winner does better.
    * 
-   * @return the time threshold to win a round
+   * @return the "response time" of CPU (threshold to win a round)
    */
   public double calculateTimeTreshold() {
-    if (numRounds < 10) {
+    if (cpu.getNumCards() > 25) {
       return 1.5;
-    } else if (numRounds < 20) {
-      return 1.3;
-    } else if (numRounds < 40) {
+    } else if (cpu.getNumCards() > 20) {
       return 1;
-    } else if (numRounds < 60) {
+    } else if (cpu.getNumCards() > 15) {
       return 0.8;
+    } else if (numRounds > 10) {
+      return 0.7;
     }
-    return 0.6; // you better win before it hits 0.6!
+    return 0.6;
   }
 
   /**
@@ -148,20 +150,13 @@ public class SlapJack extends CardGame {
    * @return the next card in the user's deck
    */
   public Card putNextCard() {
-    Card nextCard;
-    if (currentPlayer == 0) {
-      nextCard = user.getNextCard();
-      String userCardTense = determineNounForm(user.getNumCards(), "card");
-      String pileCardTense = determineNounForm(cardStack.size() + 1, "card");
-      System.out.printf("\nYou put down the following card and have %d %s remaining. The pile has %d %s...\n\n",
-          user.getNumCards(), userCardTense, cardStack.size() + 1, pileCardTense);
-    } else {
-      nextCard = cpu.getNextCard();
-      String cpuCardTense = determineNounForm(cpu.getNumCards(), "card");
-      String pileCardTense = determineNounForm(cardStack.size() + 1, "card");
-      System.out.printf("\n%s puts down the following card and has %d %s remaining. The pile now has %d %s...\n\n",
-          cpuName, cpu.getNumCards(), cpuCardTense, cardStack.size() + 1, pileCardTense);
-    }
+    Player nextPlayer = (currentPlayer == 0) ? user : cpu;
+    Card nextCard = nextPlayer.getNextCard();
+    String userCardTense = determineNounForm(nextPlayer.getNumCards(), "card");
+    String pileCardTense = determineNounForm(cardStack.size() + 1, "card");
+    System.out.printf("%s put down the following card and have %d %s remaining. The pile has %d %s...\n\n",
+        nextPlayer.getName(), nextPlayer.getNumCards(), userCardTense, cardStack.size() + 1, pileCardTense);
+
     return nextCard;
   }
 
@@ -213,29 +208,21 @@ public class SlapJack extends CardGame {
    * 
    * @return true if the game is finished, false if not
    */
-  public boolean isFinished() {
-    if (gameFinished) {
-      if (cpuName.equals("CPU")) { // hard-code check to make sure we don't close scanner if we invoke from another
-                                   // game
-      }
-      if (user.getNumCards() > 0) {
-        System.out.printf("%s ran out of cards. You won!\nThe game took %d turns to finish. Congrats! 👏🎉\n\n",
-            cpuName, numRounds);
-        userWon = true;
-      } else {
-        System.out.printf("You ran out of cards. %s won!\nThe game took %d turns to finish. Try again! 😿😭\n\n",
-            cpuName, numRounds);
-        userWon = false;
-      }
+  public void displayWinner() {
+    if (user.getNumCards() > 0) {
+      System.out.printf("CPU ran out of cards. You won!\nThe game took %d turns to finish. Congrats! 👏🎉\n\n", cpuName,
+          numRounds);
+    } else {
+      System.out.printf("You ran out of cards. %s won!\nThe game took %d turns to finish. Try again! 😿😭\n\n", cpuName,
+          numRounds);
     }
-    return gameFinished;
   }
 
-  public boolean playGame() {
-    while (!isFinished()) {
+  public void playGame() {
+    while (!gameFinished) {
       playRound();
     }
-    return userWon;
+    displayWinner();
   }
 
   /**

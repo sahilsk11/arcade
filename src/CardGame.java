@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 /**
  * Outlines and implements general principles for what a card game should include.
+ * 
  */
 public abstract class CardGame {
     /**
@@ -14,35 +15,31 @@ public abstract class CardGame {
      * 
      * @return an ArrayList of 52 cards (4 identical sets) in order (A, 2, 3 .... J, Q, K)
      */
-    public ArrayList<Card> constructCardList(boolean includeJokers, int size) {
+    public ArrayList<Card> constructCardList(boolean includeJokers, int sets) {
         ArrayList<Card> cards = new ArrayList<Card>();
         int cardIndex = 0;
         String cardName;
         int cardPower;
+        int size = sets * 12;
         for (int i = 0; i < size; i++) {
             switch (cardIndex) {
                 case 0:
                     cardName = "ace";
-                    cardPower = 14;
                     break;
                 case 10:
                     cardName = "jack";
-                    cardPower = 11;
                     break;
                 case 11:
                     cardName = "queen";
-                    cardPower = 12;
                     break;
                 case 12:
                     cardName = "king";
-                    cardPower = 13;
                     cardIndex = -1; //setting the index to -1 ensures it will be 0 when next round begins
                     break;
                 default:
                     cardName = new Integer(cardIndex + 1).toString();
-                    cardPower = cardIndex + 1;
             }
-            Card c = new Card(cardPower, cardName);
+            Card c = new Card(cardName);
             cards.add(c);
             cardIndex++;
         }
@@ -56,10 +53,5 @@ public abstract class CardGame {
 
     public ArrayList<Card> constructCardList() {
         return constructCardList(false, 52);
-    }
-
-
-    public ArrayList<Card> constructCardList(int size) {
-        return constructCardList(false, size);
     }
 }

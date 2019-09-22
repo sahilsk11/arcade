@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
  * Defines a playing Card
  */
 public class Card {
-    private int value; // the "power" of a card (e.g. A -> 13, 2 = 2)
     private String cardName;
     private String cardString; // the visual String of the card (with the *'s and emojis)
 
@@ -80,6 +79,7 @@ public class Card {
             while ((st = br.readLine()) != null) {
                 out += st + "\n";
             }
+            br.close();
             return out;
         } catch (FileNotFoundException f) {
             throw new IllegalArgumentException("Input card is not valid");
