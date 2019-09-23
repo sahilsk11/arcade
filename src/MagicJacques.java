@@ -147,7 +147,7 @@ public class MagicJacques extends CardGame {
         return;
       }
       cardPickedUp = lineOut("That doesn't look like a valid card. Try entering a valid playing card in the deck.", "",
-          null);
+          "Do nothing and die - [enter]", "Pick a card - [enter name of card]");
       invalidTries++;
     }
 
