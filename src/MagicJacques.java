@@ -146,8 +146,9 @@ public class MagicJacques extends CardGame {
         userLost(1);
         return;
       }
-      cardPickedUp = lineOut("That doesn't look like a valid card. Try entering a valid playing card in the deck.", "",
-          "Do nothing and die - [enter]", "Pick a card - [enter name of card]");
+      cardPickedUp = lineOut("That doesn't look like a valid card. Try entering the full name of valid playing card.",
+          "You saw a particularly sharp card earlier when looking over the deck...perhaps try re-reading the line where you looked at your right pocket.",
+          new String[] { "Do nothing and die - [enter]", "Pick a card - [enter name of card]" });
       invalidTries++;
     }
 
