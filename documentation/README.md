@@ -17,17 +17,11 @@ As part of the application process for the 2020 Kleiner Perkins Fellowship, appl
 ### Desired Outcomes
 The goal of this projects is to showcase engineering talent and creativity during the application review process. Key stakeholders include the reviewers of the application.
 
-### Brainstormig Process
-
-During ideation, I began by simplifying the question to it’s core: to create an interactive experience using playing cards, through a console-based medium. Starting from this, I was able to generate a mind map of all activities a player can use cards for. This mind map included card games, throwing cards, magic, etc. I narrowed it further to activities that fit the prompt best, then did a second round to narrow activities that were feasible through a console.
-
-As I continued to brainstorm terminal-based games, I remembered the classic “Hitchhiker’s Guide to the Galaxy” and wondered if there was way to rebuild a story-like experience, while fitting the prompt of building “interactive card games.”
-
 ### Game Selection
 
-I first developed “Slapjack,” as it was a simple game to understand for new users, and relatively easy to develop compared to most card games.
+I first developed “Slapjack,” as it was a simple game to understand for new users and allowed for abstraction.
 
-Once this was developed, I began crafting an adventure game, centered around the theme of “cards.” I recognized this might not be viewed as a card game, however, part of the prompt assesses candidates on creativity on their submission, therefore I concluded this would stretch this prompt just enough to showcase creativity.
+Once this was developed, I began crafting an adventure game, centered around the theme of “cards.” Though not a typical "card game", players must use cards in the game. This portion is to highlight creativity.
 
 ## III. Playing Games
 
@@ -35,13 +29,21 @@ Once this was developed, I began crafting an adventure game, centered around the
 <u>Time to play: 3 min</u>
 
 The goal of Slapjack is to win over all the cards. The game finishes when all other players run out of cards. The player who holds all the cards at the end wins.
-Each player is given a pile of cards, face down, and is not allowed to look at their cards. Players take turns placing their top card in a center pile, then revealing the card. If the player is not a Jack, nothing happens and the pile grows. Otherwise, the card is a Jack, the first player to slap the Jack wins the round and collects all the cards in the pile. As the pile grows larger, the stakes grow larger.
-In our modified version, players play against a CPU. The program will automatically place the cards in the pile for each player and keeps track of how many cards each player has. The task of the player is to quickly respond and “slap” the card before the CPU responds. The CPU gets faster as the game progresses.
+
+The instructions are simple:
+
+1. Players start with 26 cards, face down.
+2. Each player takes turns taking the top card from their deck, and turning it over in the middle of all players.
+3. If the card is a Jack, the first player to "slap" (hit the card) wins the round. They take the Jack and all the players in the pile.
+4. If the card is not a Jack, it simply goes into the middle of the pile.
+5. If players slap a card that is not a Jack, they opponent wins the round and takes the cards in the pile.
+
+In this version, hitting "enter" is equivalent to slapping the card. Typing "c" will allow users to pass. Cards are automatically unveiled.
+
 
 ### Magic Jacques
 <u>Time to play: 5 - 7 min</u>
 
-One of the most fascinating uses of playing cards is magic. Though re-creating the experience through a computer is challenging, Magic Jacques explores a different kind of magic: the magic of story.
 Magic Jacques is an adventure-based story game where users explore a new world they wake up into. They must make decisions as they progress, and use playing cards to stay alive. A comprehensive rule list is below:
 
 1.	Do not die
@@ -61,23 +63,21 @@ Java was a simple choice, as I had the most experience with data structures and 
 
 ![](JavaStructure.png)
 
-i. CardGame: contains methods and implementation common across card games, including if I were to make new games
-1.	Invoked to create deck of cards
+1.  CardGame: contains methods and implementation common across card games, including if I were to make new games
 
-ii.	Slapjack: defines the slapjack game
+2. Slapjack: defines the slapjack game. Subclass of CardGame. Uses Player and Card objects.
 
-iii.	Player: Defines a game player with cards, name, etc.
-1.	This is not used in MagicJacques because it is a single player game. There’s no need to track number of cards, name, etc.
+3.	Player: Defines a game player with cards, name, etc.
 
-iv.	Card: Defines a game card. Has info about name, ASCII image.
+4. Card: Defines a game card. Has info about name, ASCII image.
 
-v.	Magic Jacques: defines the MagicJacques game
+5. Magic Jacques: defines the MagicJacques game. Subclass of CardGame. Uses Card object. 
 
 ### Data Structures
 
 1. Magic Jacques uses no data structures
 
-2. Slapjack uses a Stack to contain each player’s cards and an ArrayList to contain the pile of cards in the center.
+2. Slapjack uses a Queue to contain each player’s cards and an ArrayList to contain the pile of cards in the center.
 
 ### Algorithm Choices/Code Factoring
 
@@ -121,7 +121,9 @@ The same function is used to print both statements, so we must check the subject
 
 ### Magic Jacques
 
-Similar to Slapjack, English makes the game a bit difficult. The game allows users to enter virtually anything, and we must decide whether their input has the intention of the correct move.
+Similar to Slapjack, English makes the game a bit difficult. Since users can enter any command, we must accomodate different ways of saying the correct command. To do this, we automatically convert all inputs to lower case and remove whitespace. 
+
+Most equality conditions use `.contains()` to check if the user input matches the expected input, just in case users have additional information in the command.
 
 ### Runtime Environment
 
@@ -129,4 +131,10 @@ Though we know we must run on a Linux machine, there are many variations. These 
 
 1. Screen sizes: build.sh checks screen size before it runs to make sure the terminal session can fit the images used in the games.
 
-2. Emojis: Mac terminals support emojis, but other Linux systems may not. They render them as boxes with a Unicode representation. A design decision was made to display the emojis anyway, as I made the assumption the program would mostly run from Macs. In the case they run from other systems, there may simply be boxes. This is fine, because the emojis are not critical to the games (cards still have ASCII letters and numbers).
+2. Emojis: Mac terminals support emojis, but other Linux systems may not. They render them as boxes with a Unicode representation. A design decision was made to display the emojis anyway, because the emojis are not critical to the games (cards still have ASCII letters and numbers).
+
+## VI. Testing
+
+To test games, I enlisted "beta testers" by sending out the games to friends and watching them interact with the games. Watching them struggle/enjoy different parts of playing allowed me to understand which parts of the game to focus on.
+
+
