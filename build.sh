@@ -1,7 +1,7 @@
 NUM_COLS="$(tput cols)"
-if [ $NUM_COLS -lt 105 ]
+if [ $NUM_COLS -lt 73 ]
 then
-	echo "Screen width is too low! Please increase window width to greater than 105px"
+	echo "Screen width is too low! Please increase window width to greater than 73"
 	exit
 fi
 NUM_ROWS="$(tput lines)"

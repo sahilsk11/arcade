@@ -4,14 +4,17 @@ import java.util.Collections;
 
 /**
  * Defines a game of SlapJack. Subclass of a CardGame.
+ * 
+ * @author Sahil Kapur
+ * @version 09/26/2019
  */
 public class SlapJack extends CardGame {
   int currentPlayer; // indicates the current player (0 for user, 1 for CPU)
-  boolean gameFinished; // flags the finishing of the game
-  Player user; // the player representing the user (human)
-  Player cpu; // the player representing the opponent (cpu)
+  boolean gameFinished;
+  Player user;
+  Player cpu;
   ArrayList<Card> cardStack; // the pile of cards users add their cards to
-  Scanner s; // accepts input
+  Scanner s;
   int numRounds; // keeps track of how many rounds the game takes
 
   /**
@@ -21,13 +24,18 @@ public class SlapJack extends CardGame {
    * cards
    */
   public SlapJack(Scanner s) {
-    currentPlayer = 0;
+    currentPlayer = 0; // sets current player to user
     gameFinished = false;
-    ArrayList<Card> gameCards = constructCardList();
+    ArrayList<Card> gameCards = constructCardList(); // defined in parent class
     Collections.shuffle(gameCards);
-    user = new Player("You", gameCards.subList(0, gameCards.size() / 2)); // automatically removes cards from the
-                                                                          // ArrayList
-    cpu = new Player("CPU", gameCards); // gameCards will have half of the original elements before, and then none
+
+    // Player constructor removes elements from gameCards array as they are added to
+    // player deck
+    user = new Player("You", gameCards.subList(0, gameCards.size() / 2));
+
+    // Can pass "rest of the cards" to other player
+    cpu = new Player("CPU", gameCards);
+
     numRounds = 0;
     this.s = s;
     System.out.println();
@@ -37,9 +45,13 @@ public class SlapJack extends CardGame {
   /**
    * Constructs the plural/singular form of a noun as needed
    * 
-   * @param n    the number of occurances of the noun (e.g. 5 cards)
+   * @param n    the number of occurances of the noun (e.g. 5 cards; 5 is num
+   *             occurences)
    * @param noun the singular form of the noun (e.g. card)
    * @return the appropriate form of the noun
+   * 
+   *         sample input determineNounForm(5, card) -> "cards"
+   *         determineNouneForm(1, card) -> "card"
    */
   public String determineNounForm(int n, String noun) {
     return (n == 1) ? noun : noun + "s";
@@ -54,7 +66,7 @@ public class SlapJack extends CardGame {
    * @param timeElapsed   how long the user took to slap the card
    * @param timeTreshhold the threshold for accepted slap time (or, the time for
    *                      the opponent to slap)
-   * @return 0 if the player won, 1, if the CPU won, -1 if both players passed
+   * @return 0 if the player won, 1, if the CPU won, -1 if no round winner
    */
   public int determineRoundWinner(boolean isJack, boolean userSlapped, double timeElapsed, double timeTreshhold) {
     String pileCardTense = determineNounForm(cardStack.size(), "card");
@@ -68,7 +80,7 @@ public class SlapJack extends CardGame {
           return 0;
         } else {
           // User failed to slap in time
-          System.out.printf("Too slow! You took %.2f seconds. CPU slapped first and picks up %d %s. ", timeElapsed,
+          System.out.printf("Too slow! You took %.2f seconds. CPU slapped first and picks up %d %s.\n", timeElapsed,
               cardStack.size(), pileCardTense);
           return 1;
         }
@@ -98,17 +110,23 @@ public class SlapJack extends CardGame {
     if (winner != -1) {
       Player roundWinner;
       Player roundLoser;
+
+      // The verb is different depending on winner.
+      String hasVerb;
+
       if (winner == 0) {
         roundWinner = user;
         roundLoser = cpu;
+        hasVerb = "have";
       } else {
         roundWinner = cpu;
         roundLoser = user;
+        hasVerb = "has";
       }
       roundWinner.addCards(cardStack);
       String nounTense = determineNounForm(roundWinner.getNumCards(), "card");
-      System.out.printf("%s now have %d %s. %s has %d.\n", roundWinner.getName(), roundWinner.getNumCards(), nounTense,
-          roundLoser.getName(), roundLoser.getNumCards());
+      System.out.printf("%s now %s %d %s. %s has %d.\n", roundWinner.getName(), hasVerb, roundWinner.getNumCards(),
+          nounTense, roundLoser.getName(), roundLoser.getNumCards());
 
       System.out.println("Hit enter to continue...");
       s.nextLine();
@@ -118,7 +136,9 @@ public class SlapJack extends CardGame {
 
   /**
    * Dynamically adjusts the response time required to win the round. The CPU
-   * automatically gets faster as the winner does better.
+   * automatically gets faster as the player does better.
+   * 
+   * As the CPU loses, it will "slap" faster
    * 
    * @return the "response time" of CPU (threshold to win a round)
    */
@@ -129,7 +149,7 @@ public class SlapJack extends CardGame {
       return 1;
     } else if (cpu.getNumCards() > 15) {
       return 0.8;
-    } else if (numRounds > 10) {
+    } else if (cpu.getNumCards() > 10) {
       return 0.7;
     }
     return 0.6;
@@ -166,7 +186,8 @@ public class SlapJack extends CardGame {
     String userCardTense = determineNounForm(nextPlayer.getNumCards(), "card");
     String pileCardTense = determineNounForm(cardStack.size() + 1, "card");
     System.out.printf("%s %s down the following card and %s %d %s remaining. The pile has %d %s...\n\n",
-        nextPlayer.getName(), putVerb, hasVerb, nextPlayer.getNumCards(), userCardTense, cardStack.size() + 1, pileCardTense);
+        nextPlayer.getName(), putVerb, hasVerb, nextPlayer.getNumCards(), userCardTense, cardStack.size() + 1,
+        pileCardTense);
 
     return nextCard;
   }
@@ -174,12 +195,16 @@ public class SlapJack extends CardGame {
   /**
    * Plays a single round of the game.
    * 
-   * Procedures: 1. Calls putNextCard() to get next card and print the card 2.
-   * Wait for user's reaction and time them. This is not it's own function because
-   * we need a) user's input and b) response time. Easier to have within this
-   * method. 3. Determine the winner of the round by calling determineRoundWinner
-   * and prints a post-round update 4. Increases counters and ensures game is not
-   * over
+   * 1. Calls putNextCard() to get next card and print the card
+   * 
+   * 2. Wait for user's reaction and time them. This is not it's own function
+   * because we need a) user's input and b) response time. Easier to have within
+   * this method.
+   * 
+   * 3. Determine the winner of the round by calling determineRoundWinner and
+   * prints a post-round update
+   * 
+   * 4. Increases counters and ensures game is not over
    */
   public void playRound() {
     Card nextCard = putNextCard();
@@ -214,10 +239,9 @@ public class SlapJack extends CardGame {
   }
 
   /**
-   * Checks the gameFinished flag if the game is over. This flag is set to "true"
-   * in playRound.
+   * Prints out the winner of the game.
    * 
-   * @return true if the game is finished, false if not
+   * precondition: one of the players has 0 cards
    */
   public void displayWinner() {
     if (user.getNumCards() > 0) {
@@ -248,7 +272,8 @@ public class SlapJack extends CardGame {
       SlapJack game = new SlapJack(s);
       game.playGame();
       System.out.print("\nWould you like to play again?\n> ");
-      cont = s.nextLine().toLowerCase().contains("yes");
+      cont = s.nextLine().toLowerCase().contains("yes") || s.nextLine().toLowerCase().contains("ok")
+          || s.nextLine().toLowerCase().contains("sure");
     } while (cont);
     s.close();
   }

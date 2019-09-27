@@ -7,6 +7,14 @@ import java.io.FileNotFoundException;
 import java.util.concurrent.TimeUnit;
 import java.util.ArrayList;
 
+/**
+ * Defines the adventure game.
+ * 
+ * Note: extends CardGame just to check for card validity.
+ * 
+ * @author Sahil Kapur
+ * @version 09/26/2019
+ */
 public class MagicJacques extends CardGame {
   Scanner s;
   ArrayList<Card> cards;
@@ -139,51 +147,42 @@ public class MagicJacques extends CardGame {
         new String[] { "Do nothing and die - [enter]", "Pick a card - [enter name of card]" });
 
     int invalidTries = 0;
-    while (!isValidCard(cardPickedUp) && invalidTries <= 3) { // allows three invalid tries
-      if (invalidTries == 3) {
-        System.out.println(
-            "\nAs you search for this non-existant playing card in the deck, the lights go dark. The last thing you hear is a shrill laugh...\n\nNext time, read the contents of your pocket closer, and search for a sharp card!\n");
-        userLost(1);
-        return;
+    int wrongGuesses = 0;
+    while (!cardPickedUp.contains("joker")) {
+      // user has 3 invalid gusses
+      if (!isValidCard(cardPickedUp)) {
+        invalidTries++;
+        if (invalidTries < 3) {
+          cardPickedUp = lineOut(
+              "That doesn't look like a valid card. Try entering the full name of valid playing card.",
+              "You saw a particularly sharp card earlier when looking over the deck...perhaps try re-reading the line where you looked at your right pocket.",
+              new String[] { "Do nothing and die - [enter]", "Pick a card - [enter name of card]" });
+        } else {
+          System.out.println(
+              "\nAs you search for this non-existant playing card in the deck, the lights go dark. The last thing you hear is a shrill laugh...\n\nNext time, read the contents of your pocket closer, and search for a sharp card!\n");
+          userLost(1);
+          return;
+        }
       }
-      cardPickedUp = lineOut("That doesn't look like a valid card. Try entering the full name of valid playing card.",
-          "You saw a particularly sharp card earlier when looking over the deck...perhaps try re-reading the line where you looked at your right pocket.",
-          new String[] { "Do nothing and die - [enter]", "Pick a card - [enter name of card]" });
-      invalidTries++;
+      // card is valid, but wrong
+      else {
+        wrongGuesses++;
+        if (wrongGuesses < 2) {
+          cardPickedUp = lineOut(
+              "Wrong choice! When you looked over the deck earlier, you saw a particularly sharp card.\nTry re-reading the line where you looked over the deck!",
+              "The card has a clown on it.",
+              new String[] { "Do nothing and die - [enter]", "Pick a card - [enter name of card]" });
+        } else {
+          System.out.println(
+              "\nYou fling the card at the clown, only to realize it did nothing. The last thing you hear is a shrill\nlaugh in your ear. Try picking a different card!");
+          userLost(1);
+          return;
+        }
+      }
     }
 
-    if (!checkClownCard(cardPickedUp)) { // allow one wrong guess
-      cardPickedUp = lineOut(
-          "Wrong choice! When you looked over the deck earlier, you saw a particularly sharp card. Try re-reading the line where you looked over the deck!",
-          "The card has a clown on it.",
-          new String[] { "Do nothing and die - [enter]", "Pick a card - [enter name of card]" });
-      if (!checkClownCard(cardPickedUp)) {
-        System.out.println(
-            "\nYou fling the card at the clown, only to realize it did nothing. The last thing you hear is a shrill laugh in your ear. Try picking a different card!");
-        userLost(1);
-        return;
-      }
-    }
-  }
-
-  /**
-   * Checks if the card is a joker and prints the next step.
-   * 
-   * The print statement is included in a boolean check because it reduced clutter
-   * in code. Alternative was to have the same print statement after both checks
-   * above.
-   * 
-   * @param card the user's choice of card
-   * @return true if the card is a joker; false if not
-   */
-  public boolean checkClownCard(String card) {
-    if (card.contains("joker")) {
-      System.out.println(
-          "\nYou fling the Joker with all of your might at the clown. The card flies through the air and hits the clown square on the nose. With a second pop, the clown turns into a pile of confetti. Only his shoes are left.\n");
-      return true;
-    } else {
-      return false;
-    }
+    System.out.println(
+        "\nYou fling the Joker with all of your might at the clown. The card flies through the air and\nhits the clown square on the nose. With a second pop, the clown turns into a pile of confetti. Only his shoes\nare left.\n");
   }
 
   /**
@@ -196,7 +195,7 @@ public class MagicJacques extends CardGame {
         "You're asking for a hint now? You just passed the stage. Just hit enter.",
         new String[] { "Do nothing - [enter]" });
     String nextInp = lineOut(
-        "You stare at the empty shoes where the clown was, recovering from the shock. You remember you're still not wearing shoes.\n\n1. Wear the shoes - wear shoes\n2. Do nothing - [enter]",
+        "You stare at the empty shoes where the clown was, recovering from the shock. You remember you're still\nnot wearing shoes.\n\n1. Wear the shoes - wear shoes\n2. Do nothing - [enter]",
         "You still don't have shoes. Why not put the clown's shoes on?",
         new String[] { "Wear the clown's shoes - \"wear shoes\"", "Do nothing - [enter]" });
     while (!(nextInp.equals("wear the shoes") || nextInp.contains("wear") || nextInp.contains("shoes")
@@ -241,7 +240,7 @@ public class MagicJacques extends CardGame {
         "You're asking for a hint now? You just passed the stage. Just hit enter.",
         new String[] { "Do nothing - [enter]" });
     String response = lineOut(
-        "You enter what appears to be the backstage of a theater. A short man with a bushy mustache runs toward you.\n\n\"Jacques! What are you doing? Get in costume! You're going on in 2 minutes!\" He points to the clown\ncostume hanging in the corner.\n\nYou wonder what to do. Should you follow directions or run away?\n1. Run away - run\n2. Put on the costume - costume",
+        "You enter what appears to be the backstage of a theater. A short man with a bushy mustache runs\ntoward you.\n\n\"Jacques! What are you doing? Get in costume! You're going on in 2 minutes!\" He points to the clown\ncostume hanging in the corner.\n\nYou wonder what to do. Should you follow directions or run away?\n1. Run away - run\n2. Put on the costume - costume",
         "Enter \"1\" or \"2\"", new String[] { "1. Run away - run", "2. Put on the costume - costume" });
     if (response.equals("1") || response.contains("run")) {
       userWon(false);
@@ -295,10 +294,10 @@ public class MagicJacques extends CardGame {
       System.out.println("\nYou close your eyes and hear the card flying at you.");
     } else {
       lineOut(
-          "You run out the door, and decide to enter the door \"Very Scary\". The room is a well-lit conference room full of people, with the words \"Kleiner Perkins\" on the wall. It looks like a meeting had just finished.",
+          "You run out the door, and decide to enter the door \"Very Scary\". The room is a well-lit conference room\nfull of people, with the words \"Kleiner Perkins\" on the wall. It looks like a meeting had just finished.",
           "We're confused as well, friend. Just hit enter.", new String[] { "Do nothing - enter" });
       System.out.println(
-          "\nA stern woman approaches you. \"Well, Jacques, it looks like you've played your cards right. Kleiner\nPerkins would be more than happy to lead the Series A on this one. Glad to have you.\" Before you can respond, you wake up.");
+          "\nA stern woman approaches you. \"Well, Jacques, it looks like you've played your cards right. Kleiner\nPerkins would be more than happy to lead the Series A on this one. Glad to have you.\" Before you can\nrespond, you wake up.");
     }
 
     System.out

@@ -49,6 +49,11 @@ public class Player {
     }
   }
 
+  /**
+   * Gets the name of the player
+   * 
+   * @return the name of the player
+   */
   public String getName() {
     return name;
   }
