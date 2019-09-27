@@ -275,8 +275,8 @@ public class SlapJack extends CardGame {
       SlapJack game = new SlapJack(s);
       game.playGame();
       System.out.print("\nWould you like to play again?\n> ");
-      cont = s.nextLine().toLowerCase().contains("yes") || s.nextLine().toLowerCase().contains("ok")
-          || s.nextLine().toLowerCase().contains("sure");
+      String nextIn = s.nextLine().toLowerCase();
+      cont = nextIn.contains("yes") || nextIn.contains("ok") || nextIn.contains("sure");
     } while (cont);
     s.close();
   }
