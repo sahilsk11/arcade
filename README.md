@@ -137,4 +137,10 @@ Though we know we must run on a Linux machine, there are many variations. These 
 
 To test games, I enlisted "beta testers" by sending out the games to friends and watching them interact with the games. Watching them struggle/enjoy different parts of playing allowed me to understand which parts of the game to focus on.
 
+I chose not to make test cases for Slapjack because the general errors would be grammar errors, not code errors. Additionally, since the order is random every time, static test cases will not adequetely test the game.
 
+However, I wrote a series of test cases for Magic Jacques to test different alternatives. In `/src/MagicJacquesCases/`, I wrote 4 different test cases to ensure every alternative was appropriately handled. These tested what would happen if players used null moves, if they died, and test all possible endings.
+
+I tested them using input redirection, so I would run `java MagicJacques < MagicJacquesCases/test4.txt`. 
+
+I would run all cases against the program everytime I made a major change.
