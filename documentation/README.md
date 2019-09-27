@@ -1,4 +1,4 @@
-# Jack's Arcade: Design Document
+# Jack's Arcade: Design
 By Sahil Kapur
 
 ## I. How to Run Code
