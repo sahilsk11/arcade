@@ -75,7 +75,7 @@ public class SlapJack extends CardGame {
       if (isJack) {
         if (timeElapsed < timeTreshhold) {
           // if the user slapped a jack within the time, they win the round
-          System.out.printf("You slapped the jack first in just %.2f seconds! You pick up %d %s. ", timeElapsed,
+          System.out.printf("You slapped the jack first in just %.2f seconds! You pick up %d %s.\n", timeElapsed,
               cardStack.size(), pileCardTense);
           return 0;
         } else {
@@ -86,12 +86,12 @@ public class SlapJack extends CardGame {
         }
       } else {
         // User slapped the wrong card
-        System.out.printf("That's not a jack! Opponent picks up %d %s. ", cardStack.size(), pileCardTense);
+        System.out.printf("That's not a jack! Opponent picks up %d %s.\n", cardStack.size(), pileCardTense);
         return 1;
       }
     } else if (isJack) {
       // User did not slap a jack
-      System.out.printf("You missed a jack! Opponent slapped first and picks up %d %s. ", cardStack.size(),
+      System.out.printf("You missed a jack! Opponent slapped first and picks up %d %s.\n", cardStack.size(),
           pileCardTense);
       return 1;
     } else {
@@ -113,20 +113,23 @@ public class SlapJack extends CardGame {
 
       // The verb is different depending on winner.
       String hasVerb;
+      String secondHasVerb;
 
       if (winner == 0) {
         roundWinner = user;
         roundLoser = cpu;
         hasVerb = "have";
+        secondHasVerb = "has";
       } else {
         roundWinner = cpu;
         roundLoser = user;
         hasVerb = "has";
+        secondHasVerb = "have";
       }
       roundWinner.addCards(cardStack);
       String nounTense = determineNounForm(roundWinner.getNumCards(), "card");
-      System.out.printf("%s now %s %d %s. %s has %d.\n", roundWinner.getName(), hasVerb, roundWinner.getNumCards(),
-          nounTense, roundLoser.getName(), roundLoser.getNumCards());
+      System.out.printf("%s now %s %d %s. %s %s %d.\n", roundWinner.getName(), hasVerb, roundWinner.getNumCards(),
+          nounTense, roundLoser.getName(), secondHasVerb, roundLoser.getNumCards());
 
       System.out.println("Hit enter to continue...");
       s.nextLine();
@@ -185,7 +188,7 @@ public class SlapJack extends CardGame {
     Card nextCard = nextPlayer.getNextCard();
     String userCardTense = determineNounForm(nextPlayer.getNumCards(), "card");
     String pileCardTense = determineNounForm(cardStack.size() + 1, "card");
-    System.out.printf("%s %s down the following card and %s %d %s remaining. The pile has %d %s...\n\n",
+    System.out.printf("%s %s down the following card and %s %d %s remaining. The pile\nnow has %d %s...\n\n",
         nextPlayer.getName(), putVerb, hasVerb, nextPlayer.getNumCards(), userCardTense, cardStack.size() + 1,
         pileCardTense);
 
