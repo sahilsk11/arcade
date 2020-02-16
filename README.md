@@ -10,13 +10,6 @@ Project must be executed from Linux terminal.
 
 ## II. Introduction
 
-### Background
-
-As part of the application process for the 2020 Kleiner Perkins Fellowship, applicants are tasked with creating “a console-based (i.e. runs in terminal) unix-compatible interactive card game.”
-
-### Desired Outcomes
-The goal of this projects is to showcase engineering talent and creativity during the application review process. Key stakeholders include the reviewers of the application.
-
 ### Game Selection
 
 I first developed “Slapjack,” as it was a simple game to understand for new users and allowed for abstraction.
